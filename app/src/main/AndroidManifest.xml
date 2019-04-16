@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateWalletActivity" />
-        <activity android:name=".ImportWalletActivity"></activity>
+        <activity android:name=".ImportWalletActivity"/>
+        <activity android:name=".TransferActivity"/>
     </application>
 
 </manifest>

@@ -42,6 +42,8 @@ public class CreateWalletActivity extends AppCompatActivity {
     private TextView mAddress;
     private TextView mKeystore;
 
+    private  String TAG = this.getClass().getSimpleName();
+
     private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -57,6 +59,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                 mPrikey.setText("私钥："+prikey);
                 mAddress.setText("地址："+address);
                 mKeystore.setText("Keystore："+keystore);
+
                 SPUtils.put(CreateWalletActivity.this,"mnemonice",mnemonice);
                 SPUtils.put(CreateWalletActivity.this,"prikey",prikey);
                 SPUtils.put(CreateWalletActivity.this,"address",address);
@@ -114,14 +117,14 @@ public class CreateWalletActivity extends AppCompatActivity {
         DeterministicKey child = dh.deriveChild(parentPath, true, true, new ChildNumber(0));
         byte[] privateKeyByte = child.getPrivKeyBytes();
         ECKeyPair keyPair = ECKeyPair.create(privateKeyByte);
-        Log.e("TAG", "generateBip44Wallet: 钥匙对  私钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));
-        Log.i("TAG", "generateBip44Wallet: 钥匙对  公钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPublicKey()));
+        Log.i(TAG, "generateBip44Wallet: 钥匙对  私钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));
+        Log.i(TAG, "generateBip44Wallet: 钥匙对  公钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPublicKey()));
         WalletFile walletFile = Wallet.createLight("123456", keyPair);
         String address = Keys.toChecksumAddress(walletFile.getAddress());
-        Log.e("lv", "address:" + address);
+        Log.i(TAG, "address:" + address);
         Gson gson = new Gson();
         String keystore = gson.toJson(walletFile);
-        Log.e("lv", "keystore:" + keystore);
+        Log.i(TAG, "keystore:" + keystore);
 
         map.put("address", address);
         map.put("prikey", Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));

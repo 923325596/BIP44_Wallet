@@ -1,6 +1,5 @@
 package com.lv.wallet;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -43,6 +42,8 @@ public class ImportWalletActivity extends AppCompatActivity {
     private static final int SEED_ITERATIONS = 2048;
     private static final int SEED_KEY_SIZE = 512;
 
+    private String TAG = this.getClass().getSimpleName();
+
     private Handler mhandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -56,6 +57,12 @@ public class ImportWalletActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_wallet);
+        initView();
+    }
+
+    private void initView() {
+       mInput = findViewById(R.id.input_wallet);
+       mShowAddress = findViewById(R.id.show_import_address);
     }
 
     /**
@@ -78,12 +85,11 @@ public class ImportWalletActivity extends AppCompatActivity {
                     ObjectMapper om = new ObjectMapper();
                     WalletFile walletFile = om.readValue(message, WalletFile.class);
                     Credentials c = loadCredentials("123456", walletFile);
-
                     String publicKey = Numeric.toHexStringNoPrefix(c.getEcKeyPair().getPublicKey());
                     c.getAddress();
                     String privateKey = Numeric.toHexStringNoPrefix(c.getEcKeyPair().getPrivateKey());
-                    Log.e("publicKey", publicKey);
-                    Log.e("privateKey", privateKey);
+                    Log.i(TAG, publicKey);
+                    Log.i(TAG, privateKey);
                     String address = Keys.toChecksumAddress(walletFile.getAddress());
                     Message msg = Message.obtain();
                     msg.what = 0;
@@ -115,9 +121,7 @@ public class ImportWalletActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 try {
-
                     byte[] seed = generateSeed(message, null);
-
                     DeterministicKey rootPrivateKey = HDKeyDerivation.createMasterPrivateKey(seed);
                     // 4. 由根私钥生成 第一个HD 钱包
                     DeterministicHierarchy dh = new DeterministicHierarchy(rootPrivateKey);
@@ -128,13 +132,10 @@ public class ImportWalletActivity extends AppCompatActivity {
                     byte[] privateKeyByte = child.getPrivKeyBytes();
 
                     ECKeyPair keyPair = ECKeyPair.create(privateKeyByte);
-                    Log.i("TAG", "generateBip44Wallet: 钥匙对  私钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));
-                    Log.i("TAG", "generateBip44Wallet: 钥匙对  公钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPublicKey()));
-
+                    Log.i(TAG, "generateBip44Wallet: 钥匙对  私钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));
+                    Log.i(TAG, "generateBip44Wallet: 钥匙对  公钥 = " + Numeric.toHexStringNoPrefix(keyPair.getPublicKey()));
                     WalletFile walletFile = Wallet.createLight("123456", keyPair);
-
                     String address = Keys.toChecksumAddress(walletFile.getAddress());
-
                     Message msg = Message.obtain();
                     msg.what = 0;
                     msg.obj = address;
@@ -170,9 +171,7 @@ public class ImportWalletActivity extends AppCompatActivity {
                     ECKeyPair keyPair = ECKeyPair.create(privateKeyByte);
                     WalletFile walletFile = Wallet.createLight("123456", keyPair);
                     String address = Keys.toChecksumAddress(walletFile.getAddress());
-
-                    Log.e("lv", "地址：" + address);
-
+                    Log.i(TAG, "地址：" + address);
                     Message msg = Message.obtain();
                     msg.what = 0;
                     msg.obj = address;

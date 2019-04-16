@@ -20,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
     public void importWallet(View view){
         startActivity(new Intent(this,ImportWalletActivity.class));
     }
+
+    public void transferWallet(View view){
+        startActivity(new Intent(this,TransferActivity.class));
+    }
 }
 
 
