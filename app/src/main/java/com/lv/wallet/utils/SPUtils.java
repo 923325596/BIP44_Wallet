@@ -1,8 +1,8 @@
 package com.lv.wallet.utils;
- 
+
 import android.content.Context;
 import android.content.SharedPreferences;
- 
+
 import java.util.Map;
  
 /**

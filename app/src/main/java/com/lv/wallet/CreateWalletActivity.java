@@ -1,8 +1,8 @@
 package com.lv.wallet;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -41,8 +41,8 @@ public class CreateWalletActivity extends AppCompatActivity {
     private TextView mPrikey;
     private TextView mAddress;
     private TextView mKeystore;
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
+
+    private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -122,8 +122,6 @@ public class CreateWalletActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String keystore = gson.toJson(walletFile);
         Log.e("lv", "keystore:" + keystore);
-
-
 
         map.put("address", address);
         map.put("prikey", Numeric.toHexStringNoPrefix(keyPair.getPrivateKey()));

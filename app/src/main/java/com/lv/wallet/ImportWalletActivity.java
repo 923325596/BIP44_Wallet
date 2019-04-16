@@ -1,10 +1,11 @@
 package com.lv.wallet;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;
@@ -31,13 +31,9 @@ import org.web3j.crypto.Wallet;
 import org.web3j.crypto.WalletFile;
 import org.web3j.utils.Numeric;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
-
-import static org.web3j.crypto.MnemonicUtils.generateSeed;
 
 public class ImportWalletActivity extends AppCompatActivity {
 
@@ -47,8 +43,7 @@ public class ImportWalletActivity extends AppCompatActivity {
     private static final int SEED_ITERATIONS = 2048;
     private static final int SEED_KEY_SIZE = 512;
 
-    @SuppressLint("HandlerLeak")
-    private Handler mhandler = new Handler() {
+    private Handler mhandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

@@ -6,22 +6,33 @@ implementation 'org.web3j:core:3.3.1-android'
 bitcoinj: 
 implementation 'org.bitcoinj:bitcoinj-core:0.14.7'
 
-//我的Gradle文件如下：
+我的Gradle文件如下：
 ´´´
-android {
-    compileSdkVersion 27
-    defaultConfig {
-        applicationId "com.lv.wallet"
-        minSdkVersion 19
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    apply plugin: 'com.android.application'
+    android {
+        compileSdkVersion 27
+        defaultConfig {
+            applicationId "com.lv.wallet"
+            minSdkVersion 19
+            targetSdkVersion 27
+            versionCode 1
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            multiDexEnabled true
+            vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\""
+            buildConfigField "String", "API_KEY", "\"435e9075f348868c2714fe7c6895efa5\""
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\""
+            buildConfigField "String", "API_KEY", "\"xxxx\""
         }
     }
     compileOptions {
@@ -29,7 +40,6 @@ android {
         sourceCompatibility 1.8
     }
 }
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -44,3 +54,4 @@ dependencies {
 ´´´
 在MainActivity中分别实现了创建钱包。导入钱包功能。
 2018年11月12日23:38:36 后续会继续更新钱包转账，查询等功能
+——————————————————————————————————————————————————
